@@ -20,7 +20,9 @@ let routes = [
 ]
 
 const router = new VueRouter({
-    routes // short for router: router
+    mode: 'history',
+    routes, // short for router: router
+    linkActiveClass: 'active'
 })
 
 /**
