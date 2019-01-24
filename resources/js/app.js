@@ -29,6 +29,17 @@ const options = {
 }
 Vue.use(VueProgressBar, options)
 
+// importing sweetalert2 & requiring it
+import Swal from 'sweetalert2'
+window.swal = Swal;
+const Toast = swal.mixin({
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 3000
+});
+window.toast = Toast
+
 // for form validation
 import { Form, HasError, AlertError } from 'vform'
 // form components

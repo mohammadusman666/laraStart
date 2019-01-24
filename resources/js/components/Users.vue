@@ -129,15 +129,20 @@
             },
             createUser() {
                 // Submit the form via a POST request to create a user
-                this.$Progress.start();
-                this.form.post('api/user');
-                this.$Progress.finish();
+                this.$Progress.start(); // start the progressbar
+                this.form.post('api/user'); // send the post request to create the user
+                $('#addNew').modal('hide'); // hide the modal
+                toast.fire({
+                    type: 'success',
+                    title: 'User Created Successfully!'
+                }) // sweet alert for success
+                this.$Progress.finish(); // finish the progressbar
             }
         },
         created() {
-            this.$Progress.start();
-            this.displayUsers();
-            this.$Progress.finish();
+            this.$Progress.start(); // start the progressbar
+            this.displayUsers(); // calling the displayUsers function
+            this.$Progress.finish(); // finish the progressbar
         }
     }
 </script>
