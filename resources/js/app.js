@@ -12,6 +12,9 @@ window.Vue = require('vue');
 // for form validation
 import { Form, HasError, AlertError } from 'vform'
 
+// for displaying dates & time in a readable format
+import moment from 'moment'
+
 // form components
 window.Form = Form;
 Vue.component(HasError.name, HasError)
@@ -32,6 +35,16 @@ const router = new VueRouter({
     mode: 'history',
     routes, // short for router: router
     linkActiveClass: 'active'
+})
+
+// global filter to capitalize a word
+Vue.filter('capitalize', function(text){
+    return text.charAt(0).toUpperCase() + text.slice(1);
+});
+
+// global filter to format date & time
+Vue.filter('formateDateTime', function(dateTime){
+    return moment(dateTime).format('Do MMMM YYYY');
 })
 
 /**
