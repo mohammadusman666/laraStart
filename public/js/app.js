@@ -2029,11 +2029,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    var _this2 = this;
+
     this.$Progress.start(); // start the progressbar
 
     this.displayUsers(); // calling the displayUsers function
 
     this.$Progress.finish(); // finish the progressbar
+
+    setInterval(function () {
+      return _this2.displayUsers();
+    }, 3000); // calling displayUsers function every 3 secs
   }
 });
 

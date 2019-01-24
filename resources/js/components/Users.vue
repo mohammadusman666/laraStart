@@ -143,6 +143,8 @@
             this.$Progress.start(); // start the progressbar
             this.displayUsers(); // calling the displayUsers function
             this.$Progress.finish(); // finish the progressbar
+
+            setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
         }
     }
 </script>
