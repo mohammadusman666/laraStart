@@ -9,12 +9,28 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-// for form validation
-import { Form, HasError, AlertError } from 'vform'
-
 // for displaying dates & time in a readable format
 import moment from 'moment'
 
+// importing VueProgressBar & telling Vue that we're going to use it
+import VueProgressBar from 'vue-progressbar'
+const options = {
+    color: '#bffaf3',
+    failedColor: '#874b4b',
+    thickness: '5px',
+    transition: {
+        speed: '0.2s',
+        opacity: '0.6s',
+        termination: 300
+    },
+    autoRevert: true,
+    location: 'top',
+    inverse: false
+}
+Vue.use(VueProgressBar, options)
+
+// for form validation
+import { Form, HasError, AlertError } from 'vform'
 // form components
 window.Form = Form;
 Vue.component(HasError.name, HasError)

@@ -129,11 +129,15 @@
             },
             createUser() {
                 // Submit the form via a POST request to create a user
+                this.$Progress.start();
                 this.form.post('api/user');
+                this.$Progress.finish();
             }
         },
         created() {
+            this.$Progress.start();
             this.displayUsers();
+            this.$Progress.finish();
         }
     }
 </script>
