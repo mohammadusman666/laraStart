@@ -7,7 +7,7 @@
                         <h3 class="card-title">Users Table</h3>
 
                         <div class="card-tools">
-                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addNew">
+                            <button type="button" class="btn btn-success" @click="openModal">
                                 Add New
                                 <i class="fa fa-user-plus fa-fw"></i>
                             </button>
@@ -33,7 +33,7 @@
                                     <td>{{ user.type | capitalize}}</td>
                                     <td>{{ user.created_at | formateDateTime}}</td>
                                     <td>
-                                        <a href="#">
+                                        <a @click="openEditModal(user)">
                                             <i class="fa fa-edit blue"></i>
                                         </a>
                                         /
@@ -182,6 +182,15 @@
                         })
                     }
                 })
+            },
+            openModal() {
+                this.form.reset(); // call the reset function of vform to reset the fields
+                $('#addNew').modal('show'); // show the modal
+            },
+            openEditModal(user) {
+                this.form.reset(); // call the reset function of vform to reset the fields
+                $('#addNew').modal('show'); // show the modal
+                this.form.fill(user); // fill the modal with the user information
             }
         },
         created() {
