@@ -37,7 +37,7 @@
                                             <i class="fa fa-edit blue"></i>
                                         </a>
                                         /
-                                        <a href="#">
+                                        <a @click="deleteUser(user.id)">
                                             <i class="fa fa-trash red"></i>
                                         </a>
                                     </td>
@@ -134,7 +134,7 @@
                 this.form.post('api/user')
                 // if successful
                 .then(() => {
-                    Fire.$emit('afterUserCreation'); // create a custom afterUserCreation event
+                    Fire.$emit('afterUserCreation'); // fire a custom afterUserCreation event
                     $('#addNew').modal('hide'); // hide the modal
                     toast.fire({
                         type: 'success',
@@ -145,6 +145,42 @@
                 // if error
                 .catch(() => {
                     this.$Progress.fail(); // fail the progressbar
+                })
+            },
+            deleteUser(userId) {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                })
+                .then((result) => {
+                    // if confirmButton is clciked
+                    if (result.value) {
+                        // send request to the server to delete the user
+                        this.form.delete('api/user/'+userId)
+                        // if the delete request is successful
+                        .then(() => {
+                            // show the successful message
+                            Swal.fire(
+                                'Deleted!',
+                                'User has been deleted.',
+                                'success'
+                            )
+                            Fire.$emit('afterUserCreation'); // fire a custom afterUserCreation event
+                        })
+                        // if error
+                        .catch(() => {
+                            Swal.fire(
+                                'Failed!',
+                                'Something went wrong.',
+                                'warning'
+                            )
+                        })
+                    }
                 })
             }
         },

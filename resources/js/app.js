@@ -30,11 +30,11 @@ const options = {
 Vue.use(VueProgressBar, options)
 
 // importing sweetalert2 & requiring it
-import Swal from 'sweetalert2'
-window.swal = Swal;
-const Toast = swal.mixin({
+import Swal from 'sweetalert2/dist/sweetalert2.all.min.js'
+window.Swal = Swal;
+const Toast = Swal.mixin({
     toast: true,
-    position: 'top',
+    position: 'top-end',
     showConfirmButton: false,
     timer: 3000
 });
