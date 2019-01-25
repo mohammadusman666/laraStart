@@ -33,7 +33,7 @@
                                     <td>{{ user.type | capitalize}}</td>
                                     <td>{{ user.created_at | formateDateTime}}</td>
                                     <td>
-                                        <a @click="openEditModal(user)">
+                                        <a @click="openUpdateModal(user)">
                                             <i class="fa fa-edit blue"></i>
                                         </a>
                                         /
@@ -56,12 +56,13 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addNewLabel">Add New</h5>
+                        <h5 v-show="!updateMode" class="modal-title" id="addNewLabel">Add New</h5>
+                        <h5 v-show="updateMode" class="modal-title" id="addNewLabel">Update User's Info.</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="createUser()">
+                    <form @submit.prevent="updateMode ? updateUser() : createUser()">
                         <div class="modal-body">
                             <div class="form-group">
                                 <input v-model="form.name" type="text" name="name" placeholder="Name"
@@ -96,7 +97,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button v-show="!updateMode" type="submit" class="btn btn-primary">Create</button>
+                            <button v-show="updateMode" type="submit" class="btn btn-success">Update</button>
                         </div>
                     </form>
                 </div>
@@ -119,7 +121,9 @@
                     type: '',
                     bio: '',
                     photo: ''
-                })
+                }),
+                // updateMode is true by default
+                updateMode: true
             }
         },
         methods: {
@@ -183,11 +187,18 @@
                     }
                 })
             },
+            updateUser() {
+
+            },
             openModal() {
+                this.updateMode = false // set updateMode to false
+                this.form.clear(); // clear any errors
                 this.form.reset(); // call the reset function of vform to reset the fields
                 $('#addNew').modal('show'); // show the modal
             },
-            openEditModal(user) {
+            openUpdateModal(user) {
+                this.updateMode = true; // set updateMode to true
+                this.form.clear(); // clear any errors
                 this.form.reset(); // call the reset function of vform to reset the fields
                 $('#addNew').modal('show'); // show the modal
                 this.form.fill(user); // fill the modal with the user information
