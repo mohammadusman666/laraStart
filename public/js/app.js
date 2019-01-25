@@ -2013,25 +2013,34 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     createUser: function createUser() {
+      var _this2 = this;
+
       // Submit the form via a POST request to create a user
       this.$Progress.start(); // start the progressbar
+      // send the post request to create the user
 
-      this.form.post('api/user'); // send the post request to create the user
+      this.form.post('api/user') // if successful
+      .then(function () {
+        Fire.$emit('afterUserCreation'); // create a custom afterUserCreation event
 
-      Fire.$emit('afterUserCreation'); // create a custom afterUserCreation event
+        $('#addNew').modal('hide'); // hide the modal
 
-      $('#addNew').modal('hide'); // hide the modal
+        toast.fire({
+          type: 'success',
+          title: 'User Created Successfully!'
+        }); // sweet alert for success
 
-      toast.fire({
-        type: 'success',
-        title: 'User Created Successfully!'
-      }); // sweet alert for success
+        _this2.$Progress.finish(); // finish the progressbar
 
-      this.$Progress.finish(); // finish the progressbar
+      }) // if error
+      .catch(function () {
+        _this2.$Progress.fail(); // fail the progressbar
+
+      });
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.$Progress.start(); // start the progressbar
 
@@ -2040,7 +2049,7 @@ __webpack_require__.r(__webpack_exports__);
     this.$Progress.finish(); // finish the progressbar
 
     Fire.$on('afterUserCreation', function () {
-      _this2.displayUsers();
+      _this3.displayUsers();
     }); // listen to the event afterUserCreation and call displayUsers function
     //setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
   }

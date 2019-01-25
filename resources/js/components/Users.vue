@@ -130,14 +130,22 @@
             createUser() {
                 // Submit the form via a POST request to create a user
                 this.$Progress.start(); // start the progressbar
-                this.form.post('api/user'); // send the post request to create the user
-                Fire.$emit('afterUserCreation'); // create a custom afterUserCreation event
-                $('#addNew').modal('hide'); // hide the modal
-                toast.fire({
-                    type: 'success',
-                    title: 'User Created Successfully!'
-                }) // sweet alert for success
-                this.$Progress.finish(); // finish the progressbar
+                // send the post request to create the user
+                this.form.post('api/user')
+                // if successful
+                .then(() => {
+                    Fire.$emit('afterUserCreation'); // create a custom afterUserCreation event
+                    $('#addNew').modal('hide'); // hide the modal
+                    toast.fire({
+                        type: 'success',
+                        title: 'User Created Successfully!'
+                    }) // sweet alert for success
+                    this.$Progress.finish(); // finish the progressbar
+                })
+                // if error
+                .catch(() => {
+                    this.$Progress.fail(); // fail the progressbar
+                })
             }
         },
         created() {
