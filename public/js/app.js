@@ -2018,6 +2018,8 @@ __webpack_require__.r(__webpack_exports__);
 
       this.form.post('api/user'); // send the post request to create the user
 
+      Fire.$emit('afterUserCreation'); // create a custom afterUserCreation event
+
       $('#addNew').modal('hide'); // hide the modal
 
       toast.fire({
@@ -2037,9 +2039,10 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$Progress.finish(); // finish the progressbar
 
-    setInterval(function () {
-      return _this2.displayUsers();
-    }, 3000); // calling displayUsers function every 3 secs
+    Fire.$on('afterUserCreation', function () {
+      _this2.displayUsers();
+    }); // listen to the event afterUserCreation and call displayUsers function
+    //setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
   }
 });
 
@@ -73631,7 +73634,10 @@ Vue.filter('capitalize', function (text) {
 
 Vue.filter('formateDateTime', function (dateTime) {
   return moment__WEBPACK_IMPORTED_MODULE_0___default()(dateTime).format('Do MMMM YYYY');
-});
+}); // to create custom events
+
+var Fire = new Vue();
+window.Fire = Fire;
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

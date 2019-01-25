@@ -131,6 +131,7 @@
                 // Submit the form via a POST request to create a user
                 this.$Progress.start(); // start the progressbar
                 this.form.post('api/user'); // send the post request to create the user
+                Fire.$emit('afterUserCreation'); // create a custom afterUserCreation event
                 $('#addNew').modal('hide'); // hide the modal
                 toast.fire({
                     type: 'success',
@@ -144,7 +145,10 @@
             this.displayUsers(); // calling the displayUsers function
             this.$Progress.finish(); // finish the progressbar
 
-            setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
+            Fire.$on('afterUserCreation', () => {
+                this.displayUsers();
+            }); // listen to the event afterUserCreation and call displayUsers function
+            //setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
         }
     }
 </script>

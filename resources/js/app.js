@@ -74,6 +74,10 @@ Vue.filter('formateDateTime', function(dateTime){
     return moment(dateTime).format('Do MMMM YYYY');
 })
 
+// to create custom events
+let Fire = new Vue();
+window.Fire = Fire;
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
