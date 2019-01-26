@@ -1,8 +1,15 @@
 <style>
-.widget-user-header {
+.widget-user .widget-user-header {
     background-position: center center;
     background-size: cover;
     height: 250px;
+}
+.widget-user .widget-user-image {
+    top: 140px;
+    left: 47%;
+}
+.widget-user .widget-user-image > img {
+    width: 150px;
 }
 </style>
 
@@ -73,31 +80,44 @@
                                     <div class="form-group">
                                         <label for="inputName" class="col-sm-2 control-label">Name</label>
                                         <div class="col-sm-10">
-                                        <input type="" class="form-control" id="inputName" placeholder="Name">
+                                            <input v-model="form.name" type="text" name="name" placeholder="Name"
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                                            <has-error :form="form" field="name"></has-error>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputEmail" class="col-sm-2 control-label">Email</label>
                                         <div class="col-sm-12">
-                                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                                            <input v-model="form.email" type="email" name="email" placeholder="Email"
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                                            <has-error :form="form" field="email"></has-error>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
                                         <div class="col-sm-12">
-                                            <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
+                                            <textarea v-model="form.bio" id="inputExperience" placeholder="Experience"
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }">
+                                            </textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="photo" class="col-sm-2 control-label">Profile Photo</label>
+                                        <label for="exampleInputFile" class="col-sm-2 control-label">File input</label>
                                         <div class="col-sm-12">
-                                            <input type="file" name="photo" class="form-input">
+                                            <div class="input-group">
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="exampleInputFile">
+                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="password" class="col-sm-12 control-label">Passport (leave empty if not changing)</label>
+                                        <label for="password" class="col-sm-12 control-label">Password (leave empty if not changing)</label>
                                         <div class="col-sm-12">
-                                            <input type="password" class="form-control" id="password" placeholder="Passport">
+                                            <input v-model="form.password" type="password" name="password" id="password" placeholder="Password"
+                                                class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
+                                            <has-error :form="form" field="password"></has-error>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -125,8 +145,26 @@
 
 <script>
     export default {
+        data() {
+            return {
+                // Create a new form instance
+                form: new Form({
+                    id: '',
+                    name: '',
+                    email: '',
+                    password: '',
+                    type: '',
+                    bio: '',
+                    photo: ''
+                })
+            }
+        },
         mounted() {
             console.log('Component mounted.')
+        },
+        created() {
+            // axios is going to send GET request to api and return an object and fill the data in this.form
+            axios.get('api/profile').then(({ data }) => (this.form.fill(data)));
         }
     }
 </script>
