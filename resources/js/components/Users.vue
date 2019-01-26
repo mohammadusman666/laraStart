@@ -115,6 +115,7 @@
                 users : {},
                 // Create a new form instance
                 form: new Form({
+                    id: '',
                     name: '',
                     email: '',
                     password: '',
@@ -138,7 +139,7 @@
                 this.form.post('api/user')
                 // if successful
                 .then(() => {
-                    Fire.$emit('afterUserCreation'); // fire a custom afterUserCreation event
+                    Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
                     $('#addNew').modal('hide'); // hide the modal
                     toast.fire({
                         type: 'success',
@@ -148,6 +149,10 @@
                 })
                 // if error
                 .catch(() => {
+                    toast.fire({
+                        type: 'error',
+                        title: 'User Creation Failed!'
+                    }) // sweet alert for failure
                     this.$Progress.fail(); // fail the progressbar
                 })
             },
@@ -174,7 +179,7 @@
                                 'User has been deleted.',
                                 'success'
                             )
-                            Fire.$emit('afterUserCreation'); // fire a custom afterUserCreation event
+                            Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
                         })
                         // if error
                         .catch(() => {
@@ -188,7 +193,27 @@
                 })
             },
             updateUser() {
-
+                this.$Progress.start(); // start the progressbar
+                // send the update request to the api
+                this.form.put('api/user/'+this.form.id)
+                // if successful
+                .then(() => {
+                    Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
+                    $('#addNew').modal('hide'); // hide the modal
+                    toast.fire({
+                        type: 'success',
+                        title: 'User Updated Successfully!'
+                    }) // sweet alert for success
+                    this.$Progress.finish(); // finish the progressbar
+                })
+                // if error
+                .catch(() => {
+                    toast.fire({
+                        type: 'error',
+                        title: 'User Updation Failed!'
+                    }) // sweet alert for failure
+                    this.$Progress.fail(); // fail the progressbar
+                })
             },
             openModal() {
                 this.updateMode = false // set updateMode to false
@@ -209,9 +234,9 @@
             this.displayUsers(); // calling the displayUsers function
             this.$Progress.finish(); // finish the progressbar
 
-            Fire.$on('afterUserCreation', () => {
+            Fire.$on('updateDisplay', () => {
                 this.displayUsers();
-            }); // listen to the event afterUserCreation and call displayUsers function
+            }); // listen to the event updateDisplay and call displayUsers function
             //setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
         }
     }

@@ -1995,6 +1995,7 @@ __webpack_require__.r(__webpack_exports__);
       users: {},
       // Create a new form instance
       form: new Form({
+        id: '',
         name: '',
         email: '',
         password: '',
@@ -2025,7 +2026,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.form.post('api/user') // if successful
       .then(function () {
-        Fire.$emit('afterUserCreation'); // fire a custom afterUserCreation event
+        Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
 
         $('#addNew').modal('hide'); // hide the modal
 
@@ -2038,6 +2039,11 @@ __webpack_require__.r(__webpack_exports__);
 
       }) // if error
       .catch(function () {
+        toast.fire({
+          type: 'error',
+          title: 'User Creation Failed!'
+        }); // sweet alert for failure
+
         _this2.$Progress.fail(); // fail the progressbar
 
       });
@@ -2061,7 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
           .then(function () {
             // show the successful message
             Swal.fire('Deleted!', 'User has been deleted.', 'success');
-            Fire.$emit('afterUserCreation'); // fire a custom afterUserCreation event
+            Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
           }) // if error
           .catch(function () {
             Swal.fire('Failed!', 'Something went wrong.', 'warning');
@@ -2069,7 +2075,36 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    updateUser: function updateUser() {},
+    updateUser: function updateUser() {
+      var _this4 = this;
+
+      this.$Progress.start(); // start the progressbar
+      // send the update request to the api
+
+      this.form.put('api/user/' + this.form.id) // if successful
+      .then(function () {
+        Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
+
+        $('#addNew').modal('hide'); // hide the modal
+
+        toast.fire({
+          type: 'success',
+          title: 'User Updated Successfully!'
+        }); // sweet alert for success
+
+        _this4.$Progress.finish(); // finish the progressbar
+
+      }) // if error
+      .catch(function () {
+        toast.fire({
+          type: 'error',
+          title: 'User Updation Failed!'
+        }); // sweet alert for failure
+
+        _this4.$Progress.fail(); // fail the progressbar
+
+      });
+    },
     openModal: function openModal() {
       this.updateMode = false; // set updateMode to false
 
@@ -2092,7 +2127,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     this.$Progress.start(); // start the progressbar
 
@@ -2100,9 +2135,9 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$Progress.finish(); // finish the progressbar
 
-    Fire.$on('afterUserCreation', function () {
-      _this4.displayUsers();
-    }); // listen to the event afterUserCreation and call displayUsers function
+    Fire.$on('updateDisplay', function () {
+      _this5.displayUsers();
+    }); // listen to the event updateDisplay and call displayUsers function
     //setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
   }
 });
