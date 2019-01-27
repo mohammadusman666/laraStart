@@ -24,7 +24,7 @@
                         <h5 class="widget-user-desc">Web Designer</h5>
                     </div>
                     <div class="widget-user-image">
-                        <img class="img-circle" src="img/user-profile.jpg" alt="User Avatar">
+                        <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
                     </div>
                     <div class="card-footer">
                         <div class="row">
@@ -160,6 +160,9 @@
             }
         },
         methods: {
+            getProfilePhoto() {
+                return 'img/profile/' + this.form.photo;
+            },
             updateInfo() {
                 this.$Progress.start(); // start the progressbar
                 // send a put request to the server
