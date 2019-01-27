@@ -2037,35 +2037,54 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     updateInfo: function updateInfo() {
+      var _this = this;
+
+      this.$Progress.start(); // start the progressbar
       // send a put request to the server
-      this.form.put('api/profile/').then(function () {}).catch(function () {});
+
+      this.form.put('api/profile/').then(function () {
+        _this.$Progress.finish(); // finish the progressbar
+
+      }).catch(function () {
+        _this.$Progress.fail(); // fail the progressbar
+
+      });
     },
     updateProfile: function updateProfile(e) {
-      var _this = this;
+      var _this2 = this;
 
       // console.log('uploading!');
       var file = e.target.files[0]; // console.log(file);
 
       var reader = new FileReader();
 
-      reader.onloadend = function (file) {
-        // console.log('RESULT', reader.result)
-        _this.form.photo = reader.result;
-      };
+      if (file['size'] < 2111775) {
+        // convert image to base64 string
+        reader.onloadend = function (file) {
+          // console.log('RESULT', reader.result)
+          _this2.form.photo = reader.result;
+        };
 
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+      } else {
+        toast.fire({
+          type: 'error',
+          title: 'Upload Failed!',
+          text: 'File size greater than 2MB.'
+        }); // sweet alert for failure
+      }
     }
   },
   mounted: function mounted() {
     console.log('Component mounted.');
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     // axios is going to send GET request to api and return an object and fill the data in this.form
     axios.get('api/profile').then(function (_ref) {
       var data = _ref.data;
-      return _this2.form.fill(data);
+      return _this3.form.fill(data);
     });
   }
 });

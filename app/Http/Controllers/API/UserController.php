@@ -126,11 +126,24 @@ class UserController extends Controller
     {
         $user = auth('api')->user();
 
-        if ($request->photo) {
+        // for validating update user fields
+        $this->validate($request,[
+            'name' => 'required|string|max:191',
+            'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'password' => 'sometimes|required|string|min:6'
+        ]);
+
+        $currentPhoto = $user->photo;
+        if ($request->photo != $currentPhoto)
+        {
             // generate unuique name for the file
             $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
             // make the image from base64 string and save it
             \Image::make($request->photo)->save(public_path('img/profile/').$name);
+            // update the photo
+            $request->merge(['photo' => $name]);
         }
+
+        $user->update($request->all());
     }
 }

@@ -161,13 +161,14 @@
         },
         methods: {
             updateInfo() {
+                this.$Progress.start(); // start the progressbar
                 // send a put request to the server
                 this.form.put('api/profile/')
                 .then(() => {
-
+                    this.$Progress.finish(); // finish the progressbar
                 })
                 .catch(() => {
-
+                    this.$Progress.fail(); // fail the progressbar
                 })
             },
             updateProfile(e) {
@@ -175,12 +176,24 @@
                 let file = e.target.files[0];
                 // console.log(file);
                 let reader = new FileReader();
-                reader.onloadend = (file) => {
-                    // console.log('RESULT', reader.result)
-                    this.form.photo = reader.result;
-                }
 
-                reader.readAsDataURL(file);
+                if (file['size'] < 2111775)
+                {
+                    // convert image to base64 string
+                    reader.onloadend = (file) => {
+                        // console.log('RESULT', reader.result)
+                        this.form.photo = reader.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+                else
+                {
+                    toast.fire({
+                        type: 'error',
+                        title: 'Upload Failed!',
+                        text: 'File size greater than 2MB.'
+                    }) // sweet alert for failure
+                }
             }
         },
         mounted() {
