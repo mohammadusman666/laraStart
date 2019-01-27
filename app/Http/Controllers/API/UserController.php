@@ -126,7 +126,11 @@ class UserController extends Controller
     {
         $user = auth('api')->user();
 
-        return $request->photo;
-        // return ['message' => 'success'];
+        if ($request->photo) {
+            // generate unuique name for the file
+            $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
+            // make the image from base64 string and save it
+            \Image::make($request->photo)->save(public_path('img/profile/').$name);
+        }
     }
 }

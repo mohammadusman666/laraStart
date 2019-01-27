@@ -161,9 +161,10 @@
         },
         methods: {
             updateInfo() {
+                // send a put request to the server
                 this.form.put('api/profile/')
                 .then(() => {
-                    
+
                 })
                 .catch(() => {
 

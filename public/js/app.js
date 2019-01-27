@@ -2037,6 +2037,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     updateInfo: function updateInfo() {
+      // send a put request to the server
       this.form.put('api/profile/').then(function () {}).catch(function () {});
     },
     updateProfile: function updateProfile(e) {
