@@ -229,6 +229,9 @@
                 this.form.fill(user); // fill the modal with the user information
             }
         },
+        mounted() {
+            console.log('Component mounted.')
+        },
         created() {
             this.$Progress.start(); // start the progressbar
             this.displayUsers(); // calling the displayUsers function

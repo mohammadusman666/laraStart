@@ -160,17 +160,32 @@
             }
         },
         methods: {
+            displayData() {
+                // axios is going to send GET request to api and return an object and fill the data in this.form
+                axios.get('api/profile').then(({ data }) => (this.form.fill(data)));
+            },
             getProfilePhoto() {
-                return 'img/profile/' + this.form.photo;
+                let photo = (this.form.photo.length > 200) ? this.form.photo : 'img/profile/' + this.form.photo;
+                return photo;
+                // return 'img/profile/' + this.form.photo;
             },
             updateInfo() {
                 this.$Progress.start(); // start the progressbar
                 // send a put request to the server
                 this.form.put('api/profile/')
                 .then(() => {
+                    Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
+                    toast.fire({
+                        type: 'success',
+                        title: 'Profile Updated Successfully!'
+                    }) // sweet alert for success
                     this.$Progress.finish(); // finish the progressbar
                 })
                 .catch(() => {
+                    toast.fire({
+                        type: 'error',
+                        title: 'Profile Updation Failed!'
+                    }) // sweet alert for failure
                     this.$Progress.fail(); // fail the progressbar
                 })
             },
@@ -203,8 +218,13 @@
             console.log('Component mounted.')
         },
         created() {
-            // axios is going to send GET request to api and return an object and fill the data in this.form
-            axios.get('api/profile').then(({ data }) => (this.form.fill(data)));
+            this.$Progress.start(); // start the progressbar
+            this.displayData(); // calling the displayData function
+            this.$Progress.finish(); // finish the progressbar
+
+            Fire.$on('updateDisplay', () => {
+                this.displayData();
+            }); // listen to the event updateDisplay and call displayData function
         }
     }
 </script>

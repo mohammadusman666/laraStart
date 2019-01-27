@@ -2036,25 +2036,47 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    displayData: function displayData() {
+      var _this = this;
+
+      // axios is going to send GET request to api and return an object and fill the data in this.form
+      axios.get('api/profile').then(function (_ref) {
+        var data = _ref.data;
+        return _this.form.fill(data);
+      });
+    },
     getProfilePhoto: function getProfilePhoto() {
-      return 'img/profile/' + this.form.photo;
+      var photo = this.form.photo.length > 200 ? this.form.photo : 'img/profile/' + this.form.photo;
+      return photo; // return 'img/profile/' + this.form.photo;
     },
     updateInfo: function updateInfo() {
-      var _this = this;
+      var _this2 = this;
 
       this.$Progress.start(); // start the progressbar
       // send a put request to the server
 
       this.form.put('api/profile/').then(function () {
-        _this.$Progress.finish(); // finish the progressbar
+        Fire.$emit('updateDisplay'); // fire a custom updateDisplay event
+
+        toast.fire({
+          type: 'success',
+          title: 'Profile Updated Successfully!'
+        }); // sweet alert for success
+
+        _this2.$Progress.finish(); // finish the progressbar
 
       }).catch(function () {
-        _this.$Progress.fail(); // fail the progressbar
+        toast.fire({
+          type: 'error',
+          title: 'Profile Updation Failed!'
+        }); // sweet alert for failure
+
+        _this2.$Progress.fail(); // fail the progressbar
 
       });
     },
     updateProfile: function updateProfile(e) {
-      var _this2 = this;
+      var _this3 = this;
 
       // console.log('uploading!');
       var file = e.target.files[0]; // console.log(file);
@@ -2065,7 +2087,7 @@ __webpack_require__.r(__webpack_exports__);
         // convert image to base64 string
         reader.onloadend = function (file) {
           // console.log('RESULT', reader.result)
-          _this2.form.photo = reader.result;
+          _this3.form.photo = reader.result;
         };
 
         reader.readAsDataURL(file);
@@ -2082,13 +2104,17 @@ __webpack_require__.r(__webpack_exports__);
     console.log('Component mounted.');
   },
   created: function created() {
-    var _this3 = this;
+    var _this4 = this;
 
-    // axios is going to send GET request to api and return an object and fill the data in this.form
-    axios.get('api/profile').then(function (_ref) {
-      var data = _ref.data;
-      return _this3.form.fill(data);
-    });
+    this.$Progress.start(); // start the progressbar
+
+    this.displayData(); // calling the displayData function
+
+    this.$Progress.finish(); // finish the progressbar
+
+    Fire.$on('updateDisplay', function () {
+      _this4.displayData();
+    }); // listen to the event updateDisplay and call displayData function
   }
 });
 
@@ -2349,6 +2375,9 @@ __webpack_require__.r(__webpack_exports__);
 
       this.form.fill(user); // fill the modal with the user information
     }
+  },
+  mounted: function mounted() {
+    console.log('Component mounted.');
   },
   created: function created() {
     var _this5 = this;
