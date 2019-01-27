@@ -79,7 +79,7 @@
                                 <form class="form-horizontal">
                                     <div class="form-group">
                                         <label for="inputName" class="col-sm-2 control-label">Name</label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-12">
                                             <input v-model="form.name" type="text" name="name" placeholder="Name"
                                                 class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
                                             <has-error :form="form" field="name"></has-error>
@@ -106,7 +106,7 @@
                                         <div class="col-sm-12">
                                             <div class="input-group">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" id="exampleInputFile">
+                                                    <input @change="updateProfile" type="file" class="custom-file-input" id="exampleInputFile">
                                                     <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                                 </div>
                                             </div>
@@ -122,7 +122,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-offset-2 col-sm-12">
-                                            <button type="submit" class="btn btn-success">Update</button>
+                                            <button @click.prevent="updateInfo" type="submit" class="btn btn-success">Update</button>
                                         </div>
                                     </div>
                                 </form>
@@ -157,6 +157,29 @@
                     bio: '',
                     photo: ''
                 })
+            }
+        },
+        methods: {
+            updateInfo() {
+                this.form.put('api/profile/')
+                .then(() => {
+                    
+                })
+                .catch(() => {
+
+                })
+            },
+            updateProfile(e) {
+                // console.log('uploading!');
+                let file = e.target.files[0];
+                // console.log(file);
+                let reader = new FileReader();
+                reader.onloadend = (file) => {
+                    // console.log('RESULT', reader.result)
+                    this.form.photo = reader.result;
+                }
+
+                reader.readAsDataURL(file);
             }
         },
         mounted() {

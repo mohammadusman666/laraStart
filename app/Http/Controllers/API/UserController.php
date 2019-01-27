@@ -57,17 +57,6 @@ class UserController extends Controller
     }
 
     /**
-     * Return the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function profile()
-    {
-        return auth('api')->user();
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -115,5 +104,29 @@ class UserController extends Controller
         $user->delete();
 
         return ['message' => 'User Deleted!'];
+    }
+
+    /**
+     * Return the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        return auth('api')->user();
+    }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+
+        return $request->photo;
+        // return ['message' => 'success'];
     }
 }
