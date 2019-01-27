@@ -138,10 +138,15 @@ class UserController extends Controller
         {
             // generate unuique name for the file
             $name = time().'.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
-            // make the image from base64 string and save it
-            \Image::make($request->photo)->save(public_path('img/profile/').$name);
-            // update the photo
-            $request->merge(['photo' => $name]);
+            \Image::make($request->photo)->save(public_path('img/profile/').$name); // make the image from base64 string and save it
+            $request->merge(['photo' => $name]); // update the photo
+            
+            $userPhoto = public_path('img/profile/').$currentPhoto; // name of photo on the server
+            // if photo exists on the server
+            if (file_exists($userPhoto))
+            {
+                @unlink($userPhoto); // delete photo
+            }
         }
 
         // if password has to be updated
