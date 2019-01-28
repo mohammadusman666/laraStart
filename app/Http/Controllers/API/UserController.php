@@ -17,6 +17,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+        // $this->authorize('isAdmin');
     }
 
     /**
@@ -98,6 +99,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        // check if the user who sent this request is an Admin or not
+        // $this->authorize('isAdmin');
+
         $user = User::findOrFail($id); // find the user in the table
 
         // delete the user
