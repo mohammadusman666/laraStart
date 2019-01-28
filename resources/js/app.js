@@ -109,6 +109,12 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue').default
 );
 
+// 404 error component
+Vue.component(
+    'notfound404',
+    require('./components/404.vue').default
+);
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**
