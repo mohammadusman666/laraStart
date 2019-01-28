@@ -51,6 +51,9 @@ window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+// for pagination
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 // importing VueRouter & telling Vue that we're going to use it
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)

@@ -31,7 +31,7 @@ class UserController extends Controller
         if (\Gate::allows('isAdmin') || \Gate::allows('isAuthor'))
         {
             // for displaying the users
-            return User::latest()->paginate(10);
+            return User::latest()->paginate(5);
         }
     }
 

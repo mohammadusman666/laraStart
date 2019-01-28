@@ -26,7 +26,7 @@
                                     <th>Actions</th>
                                 </tr>
                                 <!-- Displaying Users that we fetched in the users object -->
-                                <tr v-for="user in users" :key="user.id">
+                                <tr v-for="user in users.data" :key="user.id">
                                     <td>{{ user.id }}</td>
                                     <td>{{ user.name }}</td>
                                     <td>{{ user.email }}</td>
@@ -46,6 +46,10 @@
                         </table>
                     </div>
                     <!-- /.card-body -->
+                    <div class="card-footer">
+                        <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                    </div>
+                    <!-- ./card-footer -->
                 </div>
                 <!-- /.card -->
             </div>
@@ -132,11 +136,17 @@
             }
         },
         methods: {
+            getResults(page = 1) {
+                axios.get('api/user?page=' + page)
+                .then(response => {
+                    this.users = response.data;
+                });
+            },
             displayUsers() {
                 if (this.$Gate.isAdmin() || this.$Gate.isAuthor())
                 {
                     // axios is going to send GET request to api and return an object and assign it to this.users
-                    axios.get('api/user').then(({ data }) => (this.users = data.data));
+                    axios.get('api/user').then(({ data }) => (this.users = data));
                 }
             },
             createUser() {
