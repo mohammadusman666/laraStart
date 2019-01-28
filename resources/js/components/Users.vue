@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mt-4">
+        <div class="row mt-4" v-if="$Gate.isAdmin()">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -129,8 +129,11 @@
         },
         methods: {
             displayUsers() {
-                // axios is going to send GET request to api and return an object and assign it to this.users
-                axios.get('api/user').then(({ data }) => (this.users = data.data));
+                if (this.$Gate.isAdmin())
+                {
+                    // axios is going to send GET request to api and return an object and assign it to this.users
+                    axios.get('api/user').then(({ data }) => (this.users = data.data));
+                }
             },
             createUser() {
                 // Submit the form via a POST request to create a user

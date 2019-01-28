@@ -9,6 +9,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+// for the authorization
+import Gate from './Gate'
+Vue.prototype.$Gate = new Gate(window.user);
+
 // for displaying dates & time in a readable format
 import moment from 'moment'
 

@@ -74,6 +74,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								<p>Dashboard</p>
 							</router-link>
 						</li>
+						@can('isAdmin')
 						<li class="nav-item has-treeview">
 							<a href="#" class="nav-link">
 								<i class="nav-icon fas fa-cog green"></i>
@@ -91,7 +92,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								</li>
 							</ul>
 						</li>
-						@can('isAdmin')
 						<li class="nav-item">
 							<router-link to="/developer" class="nav-link">
 								<i class="nav-icon fa fa-cogs"></i>
@@ -155,6 +155,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		</footer>
 	</div>
 	<!-- ./wrapper -->
+
+	<!-- Happens only for authenticated user -->
+	@auth
+		<script>
+			window.user = @json(auth()->user())
+		</script>
+	@endauth
 
 	<!-- REQUIRED SCRIPTS -->
 	<script src="/js/app.js"></script>
