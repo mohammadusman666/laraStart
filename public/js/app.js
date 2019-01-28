@@ -2290,7 +2290,7 @@ __webpack_require__.r(__webpack_exports__);
     displayUsers: function displayUsers() {
       var _this = this;
 
-      if (this.$Gate.isAdmin()) {
+      if (this.$Gate.isAdmin() || this.$Gate.isAuthor()) {
         // axios is going to send GET request to api and return an object and assign it to this.users
         axios.get('api/user').then(function (_ref) {
           var data = _ref.data;
@@ -59234,7 +59234,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _vm.$Gate.isAdmin()
+    _vm.$Gate.isAdminOrAuthor()
       ? _c("div", { staticClass: "row mt-4" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
@@ -59325,7 +59325,7 @@ var render = function() {
         ])
       : _vm._e(),
     _vm._v(" "),
-    !_vm.$Gate.isAdmin() ? _c("div", [_c("notfound404")], 1) : _vm._e(),
+    !_vm.$Gate.isAdminOrAuthor() ? _c("div", [_c("not-found")], 1) : _vm._e(),
     _vm._v(" "),
     _c(
       "div",
@@ -59693,7 +59693,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Registered At")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Modify")])
+      _c("th", [_vm._v("Actions")])
     ])
   },
   function() {
@@ -74717,9 +74717,32 @@ function () {
       return this.user.type === 'admin';
     }
   }, {
+    key: "isAuthor",
+    value: function isAuthor() {
+      return this.user.type === 'author';
+    }
+  }, {
     key: "isUser",
     value: function isUser() {
       return this.user.type === 'user';
+    }
+  }, {
+    key: "isAdminOrAuthor",
+    value: function isAdminOrAuthor() {
+      if (this.user.type === 'admin' || this.user.type === 'author') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "isAuthorOrUser",
+    value: function isAuthorOrUser() {
+      if (this.user.type === 'author' || this.user.type === 'user') {
+        return true;
+      } else {
+        return false;
+      }
     }
   }]);
 
@@ -74844,7 +74867,7 @@ Vue.component('passport-clients', __webpack_require__(/*! ./components/passport/
 Vue.component('passport-authorized-clients', __webpack_require__(/*! ./components/passport/AuthorizedClients.vue */ "./resources/js/components/passport/AuthorizedClients.vue").default);
 Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./components/passport/PersonalAccessTokens.vue */ "./resources/js/components/passport/PersonalAccessTokens.vue").default); // 404 error component
 
-Vue.component('notfound404', __webpack_require__(/*! ./components/404.vue */ "./resources/js/components/404.vue").default);
+Vue.component('not-found', __webpack_require__(/*! ./components/404.vue */ "./resources/js/components/404.vue").default);
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to

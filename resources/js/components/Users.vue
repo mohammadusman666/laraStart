@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row mt-4" v-if="$Gate.isAdmin()">
+        <div class="row mt-4" v-if="$Gate.isAdminOrAuthor()">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -23,7 +23,7 @@
                                     <th>Email</th>
                                     <th>Type</th>
                                     <th>Registered At</th>
-                                    <th>Modify</th>
+                                    <th>Actions</th>
                                 </tr>
                                 <!-- Displaying Users that we fetched in the users object -->
                                 <tr v-for="user in users" :key="user.id">
@@ -51,8 +51,8 @@
             </div>
         </div>
 
-        <div v-if="!$Gate.isAdmin()">
-            <notfound404></notfound404>
+        <div v-if="!$Gate.isAdminOrAuthor()">
+            <not-found></not-found>
         </div>
 
         <!-- Modal -->
@@ -133,7 +133,7 @@
         },
         methods: {
             displayUsers() {
-                if (this.$Gate.isAdmin())
+                if (this.$Gate.isAdmin() || this.$Gate.isAuthor())
                 {
                     // axios is going to send GET request to api and return an object and assign it to this.users
                     axios.get('api/user').then(({ data }) => (this.users = data.data));

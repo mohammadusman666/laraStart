@@ -27,8 +27,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        // for displaying the users
-        return User::latest()->paginate(10);
+        // $this->authorize('isAdmin');
+        if (\Gate::allows('isAdmin') || \Gate::allows('isAuthor'))
+        {
+            // for displaying the users
+            return User::latest()->paginate(10);
+        }
     }
 
     /**

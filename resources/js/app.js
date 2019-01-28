@@ -111,7 +111,7 @@ Vue.component(
 
 // 404 error component
 Vue.component(
-    'notfound404',
+    'not-found',
     require('./components/404.vue').default
 );
 
