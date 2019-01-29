@@ -76178,6 +76178,9 @@ var routes = [{
 }, {
   path: '/profile',
   component: __webpack_require__(/*! ./components/Profile.vue */ "./resources/js/components/Profile.vue").default
+}, {
+  path: '*',
+  component: __webpack_require__(/*! ./components/404.vue */ "./resources/js/components/404.vue").default
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_5__["default"]({
   mode: 'history',
