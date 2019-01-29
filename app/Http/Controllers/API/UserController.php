@@ -121,6 +121,7 @@ class UserController extends Controller
      */
     public function search()
     {
+        // if there is something in the query
         if ($search = \Request::get('q'))
         {
             $users = User::where(function($query) use ($search) {
@@ -128,6 +129,12 @@ class UserController extends Controller
                       ->orWhere('email', 'LIKE', "%$search%")
                       ->orWhere('type', 'LIKE', "%$search%");
             })->paginate(5);
+        }
+        // if query is empty
+        else
+        {
+            // get the top 5 users
+            $users = User::latest()->paginate(5);
         }
 
         return $users;
