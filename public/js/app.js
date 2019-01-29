@@ -2421,13 +2421,36 @@ __webpack_require__.r(__webpack_exports__);
       $('#addNew').modal('show'); // show the modal
 
       this.form.fill(user); // fill the modal with the user information
+    },
+    search: function search() {
+      var _this6 = this;
+
+      this.$Progress.start(); // start the progressbar
+
+      var query = this.$parent.search; // get the search data from app.js
+
+      axios.get('api/search?q=' + query) // send a GET request to get the user queried
+      .then(function (data) {
+        _this6.users = data.data;
+
+        _this6.$Progress.finish(); // finish the progressbar
+
+      }).catch(function () {
+        toast.fire({
+          type: 'error',
+          title: 'User Not Found!'
+        }); // sweet alert for failure
+
+        _this6.$Progress.fail(); // fail the progressbar
+
+      });
     }
   },
   mounted: function mounted() {
     console.log('Component mounted.');
   },
   created: function created() {
-    var _this6 = this;
+    var _this7 = this;
 
     this.$Progress.start(); // start the progressbar
 
@@ -2436,9 +2459,13 @@ __webpack_require__.r(__webpack_exports__);
     this.$Progress.finish(); // finish the progressbar
 
     Fire.$on('updateDisplay', function () {
-      _this6.displayUsers();
+      _this7.displayUsers();
     }); // listen to the event updateDisplay and call displayUsers function
     //setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
+
+    Fire.$on('search', function () {
+      _this7.search();
+    }); // listen to the event search and call search function
   }
 });
 
@@ -76225,8 +76252,16 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 
 var app = new Vue({
   el: '#app',
-  router: router // make sure to inject the router with router option to make the whole app router-aware
-
+  router: router,
+  // make sure to inject the router with router option to make the whole app router-aware
+  data: {
+    search: ''
+  },
+  methods: {
+    searchIt: function searchIt() {
+      Fire.$emit('search');
+    }
+  }
 });
 
 /***/ }),

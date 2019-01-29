@@ -129,5 +129,13 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
-    router // make sure to inject the router with router option to make the whole app router-aware
+    router, // make sure to inject the router with router option to make the whole app router-aware
+    data: {
+        search: ''
+    },
+    methods: {
+        searchIt() {
+            Fire.$emit('search');
+        }
+    }
 });

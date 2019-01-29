@@ -171,7 +171,7 @@
                         title: 'User Creation Failed!'
                     }) // sweet alert for failure
                     this.$Progress.fail(); // fail the progressbar
-                })
+                });
             },
             deleteUser(userId) {
                 Swal.fire({
@@ -244,6 +244,22 @@
                 this.form.reset(); // call the reset function of vform to reset the fields
                 $('#addNew').modal('show'); // show the modal
                 this.form.fill(user); // fill the modal with the user information
+            },
+            search() {
+                this.$Progress.start(); // start the progressbar
+                let query = this.$parent.search; // get the search data from app.js
+                axios.get('api/search?q=' + query) // send a GET request to get the user queried
+                .then((data) => {
+                    this.users = data.data
+                    this.$Progress.finish(); // finish the progressbar
+                })
+                .catch(() => {
+                    toast.fire({
+                        type: 'error',
+                        title: 'User Not Found!'
+                    }) // sweet alert for failure
+                    this.$Progress.fail(); // fail the progressbar
+                });
             }
         },
         mounted() {
@@ -258,6 +274,10 @@
                 this.displayUsers();
             }); // listen to the event updateDisplay and call displayUsers function
             //setInterval(() => this.displayUsers(), 3000); // calling displayUsers function every 3 secs
+
+            Fire.$on('search', () => {
+                this.search();
+            }); // listen to the event search and call search function
         }
     }
 </script>
